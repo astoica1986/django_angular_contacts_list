@@ -10,7 +10,7 @@ var app = angular.module('ngdemo.controllers', []);
 // http://stackoverflow.com/questions/14718826/angularjs-disable-partial-caching-on-dev-machine
 app.run(function ($rootScope, $templateCache) {
     $rootScope.$on('$viewContentLoaded', function () {
-        $templateCache.removeAll();
+        //$templateCache.removeAll();
     });
 });
 
@@ -34,6 +34,7 @@ app.controller('UserListCtrl', ['$scope', 'UsersFactory', 'UserFactory', '$locat
         $scope.deleteUser = function (userId) {
             UserFactory.delete({ id: userId });
             UsersFactory.query( UsersFactory.query(function(data) {
+
             $scope.users = data.objects;
         }));
         };
@@ -44,7 +45,7 @@ app.controller('UserListCtrl', ['$scope', 'UsersFactory', 'UserFactory', '$locat
         };
 
         UsersFactory.query( UsersFactory.query(function(data) {
-            $scope.users = data.objects;
+            $scope.users = data.objects;console.log(data.objects);
         }));
 
     }]);
