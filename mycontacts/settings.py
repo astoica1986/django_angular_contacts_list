@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'contacts',
     'tastypie',
     'south',
+    "static_precompiler",
 )
 
 MIDDLEWARE_CLASSES = (

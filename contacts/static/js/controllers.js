@@ -5,22 +5,8 @@
 var app = angular.module('ngdemo.controllers', []);
 
 
-// Clear browser cache (in development mode)
-//
-// http://stackoverflow.com/questions/14718826/angularjs-disable-partial-caching-on-dev-machine
-app.run(function ($rootScope, $templateCache) {
-    $rootScope.$on('$viewContentLoaded', function () {
-        //$templateCache.removeAll();
-    });
-});
 
 
-app.controller('DummyCtrl', ['$scope', 'DummyFactory', function ($scope, DummyFactory) {
-    $scope.bla = 'bla from controller';
-    DummyFactory.get({}, function (dummyFactory) {
-        $scope.firstname = dummyFactory.firstName;
-    })
-}]);
 
 app.controller('UserListCtrl', ['$scope', 'UsersFactory', 'UserFactory', '$location',
     function ($scope, UsersFactory, UserFactory, $location) {
@@ -28,15 +14,14 @@ app.controller('UserListCtrl', ['$scope', 'UsersFactory', 'UserFactory', '$locat
         // callback for ng-click 'editUser':
         $scope.editUser = function (userId) {
             $location.path('/user-detail/' + userId);
+
         };
 
         // callback for ng-click 'deleteUser':
         $scope.deleteUser = function (userId) {
-            UserFactory.delete({ id: userId });
-            UsersFactory.query( UsersFactory.query(function(data) {
+           UserFactory.delete({ id: userId });
+           $(".user"+userId).parent().hide();
 
-            $scope.users = data.objects;
-        }));
         };
 
         // callback for ng-click 'createUser':
@@ -44,9 +29,9 @@ app.controller('UserListCtrl', ['$scope', 'UsersFactory', 'UserFactory', '$locat
             $location.path('/user-creation');
         };
 
-        UsersFactory.query( UsersFactory.query(function(data) {
-            $scope.users = data.objects;console.log(data.objects);
-        }));
+        UsersFactory.query(function(data) {
+            $scope.users = data.objects;
+        });
 
     }]);
 
@@ -55,9 +40,21 @@ app.controller('UserDetailCtrl', ['$scope', '$routeParams', 'UserFactory', '$loc
 
         // callback for ng-click 'updateUser':
         $scope.updateUser = function () {
-            UserFactory.update($scope.user);
-            $location.path('');
-        };
+            UserFactory.update(
+                $scope.user,
+                function(){
+                    $location.path('');
+                },
+                function(error){
+                    angular.forEach(error.data.contacts,function(error,field){
+
+                        $scope.form[field].$setValidity('server', false);
+                        $scope.errors[field] = error.join(', ');
+                    });
+
+                }
+            );
+         };
 
         // callback for ng-click 'cancel':
         $scope.cancel = function () {
@@ -72,7 +69,22 @@ app.controller('UserCreationCtrl', ['$scope', 'UsersFactory', '$location',
 
         // callback for ng-click 'createNewUser':
         $scope.createNewUser = function () {
-            UsersFactory.create($scope.user);
-            $location.path('');
+
+            $scope.errors = {};
+            UsersFactory.create(
+                $scope.user,
+                function(){
+                    $location.path('');
+                },
+                function(error){
+                    angular.forEach(error.data.contacts,function(error,field){
+
+                        $scope.form[field].$setValidity('server', false);
+                        $scope.errors[field] = error.join(', ');
+                    });
+
+                }
+            );
+
         }
     }]);
