@@ -29,6 +29,10 @@ app.controller('UserListCtrl', ['$scope', 'UsersFactory', 'UserFactory', '$locat
             $location.path('/user-creation');
         };
 
+        $scope.triggerUpload = function () {
+             $('#fileUpload').click();
+        };
+
         UsersFactory.query(function(data) {
             $scope.users = data.objects;
         });

@@ -24,8 +24,19 @@
             <th style="min-width: 80px;">Last name</th>
             <th style="min-width: 80px;">Phone</th>
             <th style="min-width: 80px;">Email</th>
-            <th style="width:20px;">&nbsp;</th>
-            <th style="width:20px;">&nbsp;</th>
+            <th style="min-width: 80px;">
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-small dropdown-toggle" data-toggle="dropdown" href="#">Export as:</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/export?format_type=json">JSON</a></li>
+                        <li><a href="/export?format_type=csv">CSV</a></li>
+                        <li><a href="/export?format_type=xml">XML</a></li>
+                    </ul>
+                </div>
+            </th>
+            <th style="min-width: 200px;">
+                <a ng-click="triggerUpload()" class="btn btn-small btn-danger">Import contact list</a>
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -39,7 +50,8 @@
         </tr>
         </tbody>
     </table>
-    <a ng-click="createNewUser()" class="btn btn-small">create new user</a>
+    <a ng-click="createNewUser()" class="btn btn-primary btn-small">Create new user</a>
+
 </div>
 </script>
 <script type="text/ng-template" id="user-creation.html">
@@ -136,9 +148,13 @@
             </div>
         </div>
     </form>
+
 </div>
 
 </script>
+<form name="contactUpload" action="/upload" method="post" enctype="multipart/form-data" style="display: none">
+    <input type="file" name="uploadField" id="fileUpload"/>
+</form>
 {% endverbatim %}
 <div ng-view></div>
 
