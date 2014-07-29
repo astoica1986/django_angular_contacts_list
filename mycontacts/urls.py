@@ -10,6 +10,7 @@ contact_resource_api = ContactResource()
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^export/$', views.export),
+    url(r'^import/$', views.import_data),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(contact_resource_api.urls)),
 

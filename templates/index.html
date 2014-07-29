@@ -13,6 +13,13 @@
 </head>
 
 <body>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% verbatim %}
 <script type="text/ng-template" id="user-list.html">
     <div class="span6 container">
@@ -152,10 +159,12 @@
 </div>
 
 </script>
-<form name="contactUpload" action="/upload" method="post" enctype="multipart/form-data" style="display: none">
-    <input type="file" name="uploadField" id="fileUpload"/>
-</form>
+
 {% endverbatim %}
+<form name="contactUpload" action="/import/" method="post" enctype="multipart/form-data" style="display: none">{% csrf_token %}
+    <input type="file" name="uploadField" id="fileUpload" onchange="this.form.submit();"/>
+
+</form>
 <div ng-view></div>
 
 <!-- JQuery ================================================================ -->
