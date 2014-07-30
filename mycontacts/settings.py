@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'tastypie',
     'south',
     "static_precompiler",
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -99,3 +100,4 @@ STATICFILES_DIRS = (
         'static',
     ),
 )
+

@@ -1,12 +1,12 @@
 from django.db import models
-
+from localflavor.ro.forms import ROPhoneNumberField
 
 class Contact(models.Model):
 
     firstName = models.CharField(max_length=55)
     lastName = models.CharField(max_length=55)
     email = models.EmailField()
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=12)
 
     def as_dict(self):
         return {
